@@ -1,0 +1,27 @@
+function findInRowForMulti(SearchData1, searchData2) {
+  //*****************************
+  //구분 : 구글 앱스 스크립트 스프레드(Google Apps Script for Google SpreadSheet)
+  //함수설명 : 시트행을 기준으로 2개이상의 검색어를 이용한 행값 찾기
+  //생성일 : 2018. 12. 15         
+  //SearchData1 : 첫번째 검색키워드 
+  //SearchData2 : 두번째 검색키워드 
+  //Return : 행수(-1 자료없음)
+  //참고자료 : https://ctrlq.org/code/20001-find-rows-in-spreadsheets
+  //*****************************
+  
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("SEARCH");
+  var rows = sheet.getRange(1, 1, sheet.getLastRow(), sheet.getLastColumn()).getValues(); //첫번째열은 해더행
+  
+  for (var r=0; r<rows.length; r++) {
+       
+    rows[r][1] = Utilities.formatDate(new Date(rows[r][1].valueOf()),"GMT+0900", "yyyy-MM-dd"); //날짜를 검색하기 위해 포맷 변경
+        
+    if ( rows[r].join("#").indexOf(SearchData1) !== -1 && rows[r].join("#").indexOf(searchData2) !== -1) { //Join을 이용하여 Row를 "#" 구분자로 연결하여 데이타를 검색. 주의)한가지
+//      Logger.log(r+1);
+      return r+1;
+    }
+  }
+  
+  return -1;
+  
+}
